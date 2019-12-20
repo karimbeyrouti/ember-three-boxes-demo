@@ -58,7 +58,7 @@ export default class DemoComponent extends Component {
       property.p = property.p;
       property.r = property.r;
     }
-    this.counter += 0.05;
+    this.counter += 0.01;
   }
 
   @action

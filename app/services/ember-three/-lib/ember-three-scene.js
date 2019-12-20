@@ -5,6 +5,7 @@ const DEFAULT_RENDERER_PARAMS = {
   alpha: false,
   antialias: true,
   clearColor: 0xffffff,
+  shadowMapEnabled: false,
 };
 
 export default class EmberThreeScene {
@@ -36,6 +37,10 @@ export default class EmberThreeScene {
     let rendererProps = { ...DEFAULT_RENDERER_PARAMS, ...rendererParams };
     this.renderer = new THREE.WebGLRenderer(rendererProps);
     this.renderer.setClearColor(rendererParams.clearColor);
+    this.renderer.shadowMap.enabled = rendererParams.shadowMapEnabled;
+    if (rendererParams.shadowMapType) {
+      this.renderer.shadowMap.type = rendererParams.shadowMapType;
+    }
   }
   start() {
     this.raf.start();
@@ -80,6 +85,7 @@ export default class EmberThreeScene {
     this.parentElement.removeEventListener('mousemove', this.mouseMoveDelegate, false);
     this.parentElement.removeChild(this.domElement);
     this.stop();
+    this.raf.dispose();
     this.scene.dispose();
     this.renderer.dispose();
     this.preRenderCallback = undefined;
