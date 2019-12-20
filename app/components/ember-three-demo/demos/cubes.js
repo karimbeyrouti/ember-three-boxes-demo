@@ -12,7 +12,7 @@ export default class DemoComponent extends Component {
   @tracked containerRotation = new THREE.Euler();
 
   counter = 0;
-  cameraPosition = new THREE.Vector3(0, 0, 6.2);
+  cameraPosition = new THREE.Vector3(0, 0, 18);
   lightPosition = new THREE.Vector3(-5, 0, 10);
   geometry = new THREE.BoxGeometry(2, 2, 2);
   material = new THREE.MeshNormalMaterial();
