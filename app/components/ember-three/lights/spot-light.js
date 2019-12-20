@@ -1,5 +1,6 @@
 import ObjectProxy from '../utils/object-proxy';
 import THREE from 'three';
+import { isPresent } from '@ember/utils';
 
 export default class SpotLightComponent extends ObjectProxy {
   constructor(owner, args) {
@@ -22,39 +23,44 @@ export default class SpotLightComponent extends ObjectProxy {
       angle,
       penumbra,
     } = this.args;
-    if (this._object3D && position) {
+
+    if (!this.object3D) {
+      return;
+    }
+
+    if (position) {
       this._object3D.position.set(position.x, position.y, position.z);
     }
 
-    if (this._object3D && color) {
+    if (isPresent(color)) {
       this._object3D.color.setHex(color);
     }
 
-    if (this._object3D && angle) {
+    if (isPresent(angle)) {
       this._object3D.angle = angle;
     }
 
-    if (this._object3D && penumbra) {
+    if (isPresent(penumbra)) {
       this._object3D.penumbra = penumbra;
     }
 
-    if (this._object3D && distance) {
+    if (isPresent(distance)) {
       this._object3D.distance = distance;
     }
 
-    if (this._object3D && intensity) {
+    if (isPresent(intensity)) {
       this._object3D.intensity = intensity;
     }
 
-    if (this._object3D && castShadow) {
+    if (isPresent(castShadow)) {
       this._object3D.castShadow = castShadow;
     }
 
-    if (this._object3D && target) {
+    if (target) {
       this._object3D.target = target;
     }
 
-    if (this._object3D && shadow) {
+    if (shadow) {
       if (shadow.camera) {
         this.applySettingsToObject(this._object3D.shadow.camera, shadow.camera);
       }

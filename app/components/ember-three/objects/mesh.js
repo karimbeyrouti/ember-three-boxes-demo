@@ -11,13 +11,17 @@ export default class SceneMeshComponent extends ObjectProxy {
 
   didReceiveArgs() {
     super.didReceiveArgs();
+    if (!this.object3D) {
+      return;
+    }
+
     let { receiveShadow, castShadow } = this.args;
 
-    if (this.object3D && receiveShadow) {
+    if (receiveShadow) {
       this.object3D.receiveShadow = receiveShadow;
     }
 
-    if (this.object3D && castShadow) {
+    if (castShadow) {
       this.object3D.castShadow = castShadow;
     }
   }

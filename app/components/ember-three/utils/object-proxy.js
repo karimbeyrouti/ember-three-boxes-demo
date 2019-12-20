@@ -14,15 +14,20 @@ export default class EmberObject3DComponent extends LifeCycleComponent {
 
   didReceiveArgs() {
     let { rotation, position, parent, scale } = this.args;
-    if (this._object3D && rotation) {
+
+    if (!this._object3D) {
+      return;
+    }
+
+    if (rotation) {
       this._object3D.rotation.set(rotation.x, rotation.y, rotation.z);
     }
 
-    if (this._object3D && position) {
+    if (position) {
       this._object3D.position.set(position.x, position.y, position.z);
     }
 
-    if (this._object3D && scale) {
+    if (scale) {
       this._object3D.scale.set(scale.x, scale.y, scale.z);
     }
 

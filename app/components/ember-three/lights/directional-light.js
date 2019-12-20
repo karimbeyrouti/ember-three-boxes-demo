@@ -1,5 +1,6 @@
 import ObjectProxy from '../utils/object-proxy';
 import THREE from 'three';
+import { isPresent } from '@ember/utils';
 
 export default class SceneDirectionalLightComponent extends ObjectProxy {
   constructor(owner, args) {
@@ -11,15 +12,19 @@ export default class SceneDirectionalLightComponent extends ObjectProxy {
 
   didReceiveArgs() {
     let { position, parent, color, intensity } = this.args;
-    if (this._object3D && position) {
+    if (!this._object3D) {
+      return;
+    }
+
+    if (position) {
       this._object3D.position.set(position.x, position.y, position.z).normalize();
     }
 
-    if (this._object3D && color) {
+    if (isPresent(color)) {
       this._object3D.color.setHex(color);
     }
 
-    if (this._object3D && intensity) {
+    if (intensity) {
       this._object3D.intensity = intensity;
     }
 
