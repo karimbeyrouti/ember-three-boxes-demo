@@ -5,18 +5,20 @@ import Stats from 'stats.js';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 
-export default class DemoComponent extends Component {
+export default class InteractiveCubeDemoComponent extends Component {
   @service('ember-three/scene-manager') sceneManager;
 
-  counter = 0;
   @tracked cameraPosition = new THREE.Vector3(0, 0, 6.2);
   @tracked cameraTarget = new THREE.Vector3(0, 0, 0);
+
   emberScene = undefined;
-  lightPosition = new THREE.Vector3(1, 1, 1);
   geometry = new THREE.BoxBufferGeometry(20, 20, 20);
+  intersected = undefined;
+  intersects = [];
+  lightPosition = new THREE.Vector3(1, 1, 1);
   radius = 50;
   rendererParams = {
-    clearColor: 0xffffff,
+    clearColor: 0x222222,
   };
   sceneId = 'ember-threejs-interactive-cubes-demo';
   theta = 0;
@@ -35,7 +37,7 @@ export default class DemoComponent extends Component {
   get cubes() {
     let cubeProperties = [];
 
-    for (var i = 0; i < 2000; i++) {
+    for (let i = 0; i < 2000; i++) {
       let material = new THREE.MeshLambertMaterial({ color: Math.random() * 0xffffff });
 
       let position = new THREE.Vector3();
@@ -64,42 +66,36 @@ export default class DemoComponent extends Component {
     return cubeProperties;
   }
   render() {
-    // let { camera, scene } = this.emberScene;
-    this.theta += 0.1;
-    //
+    this.theta += 0.05;
     this.cameraPosition.x = this.radius * Math.sin(THREE.Math.degToRad(this.theta));
     this.cameraPosition.y = this.radius * Math.sin(THREE.Math.degToRad(this.theta));
     this.cameraPosition.z = this.radius * Math.cos(THREE.Math.degToRad(this.theta));
-    this.cameraPosition = this.cameraPosition;
-    this.cameraTarget = this.cameraTarget;
-    // camera.updateMatrixWorld();
-    // find intersections
-    // raycaster.setFromCamera( mouse, camera );
-    //
-    // var intersects = raycaster.intersectObjects( scene.children );
-    //
-    // if ( intersects.length > 0 ) {
-    //
-    //   if ( INTERSECTED != intersects[ 0 ].object ) {
-    //
-    //     if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
-    //
-    //     INTERSECTED = intersects[ 0 ].object;
-    //     INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex();
-    //     INTERSECTED.material.emissive.setHex( 0xff0000 );
-    //
-    //   }
-    //
-    // } else {
-    //
-    //   if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
-    //
-    //   INTERSECTED = null;
-    //
-    // }
-    // renderer.render( scene, camera );
+    this.cameraPosition = this.cameraPosition; // flag as dirty so glimmer can update args
+
+    let { intersected, intersects } = this;
+    if (intersects.length > 0) {
+      if (intersected !== intersects[0].object) {
+        if (intersected) {
+          intersected.material.emissive.setHex(intersected.currentHex);
+        }
+
+        this.intersected = intersects[0].object;
+        this.intersected.currentHex = this.intersected.material.emissive.getHex();
+        this.intersected.material.emissive.setHex(0xff0000);
+      }
+    } else {
+      if (this.intersected) {
+        this.intersected.material.emissive.setHex(0x000000);
+      }
+
+      this.intersected = undefined;
+    }
   }
 
+  @action
+  onRaycast(intersects) {
+    this.intersects = intersects;
+  }
   @action
   destroyElement() {
     document.body.removeChild(this.stats.dom);

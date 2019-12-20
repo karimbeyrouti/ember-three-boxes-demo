@@ -16,11 +16,15 @@ export default class EmberThreeScene {
   scene = undefined;
   stats = undefined;
   parentElement = undefined;
+  mouse = new THREE.Vector2();
+  resizeEventDelegate = undefined;
+  mouseMoveDelegate = undefined;
 
   constructor({ rendererParams = {} } = {}) {
     this.scene = new THREE.Scene();
     this.updateRenderer({ rendererParams });
     this.resizeEventDelegate = () => this.resize();
+    this.mouseMoveDelegate = e => this.onMouseMove(e);
     this.raf = new RequestAnimationFrame(this.render, this);
   }
 
@@ -73,6 +77,7 @@ export default class EmberThreeScene {
 
   dispose() {
     window.removeEventListener('resize', this.resizeEventDelegate);
+    this.parentElement.removeEventListener('mousemove', this.mouseMoveDelegate, false);
     this.parentElement.removeChild(this.domElement);
     this.stop();
     this.scene.dispose();
@@ -92,10 +97,19 @@ export default class EmberThreeScene {
     }
   }
 
+  onMouseMove(event) {
+    event.preventDefault();
+    this.mouse.x = (event.clientX / this.parentWidth) * 2 - 1;
+    this.mouse.y = -(event.clientY / this.parentHeight) * 2 + 1;
+  }
+
   onInsertElement(parentElement) {
     this.parentElement = parentElement;
     this.parentElement.appendChild(this.domElement);
     this.resize();
+
+    this.parentElement.removeEventListener('mousemove', this.mouseMoveDelegate, false);
+    this.parentElement.addEventListener('mousemove', this.mouseMoveDelegate, false);
 
     window.removeEventListener('resize', this.resizeEventDelegate);
     window.addEventListener('resize', this.resizeEventDelegate);
