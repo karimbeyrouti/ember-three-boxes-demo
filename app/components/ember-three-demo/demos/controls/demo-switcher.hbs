@@ -4,7 +4,7 @@
       <select {{on 'change' @onSelectDemo}}>
         {{#each this.demoList as |demoListItem|}}
           <option
-            selected={{eq this.selectedDemoListItem demoListItem}}
+            selected={{eq this.selectedDemo demoListItem}}
             value={{demoListItem}}
           >
             {{demoListItem}}

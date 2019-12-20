@@ -10,14 +10,13 @@
     />
     <EmberThree::Cameras::PerspectiveCamera
       @position={{this.cameraPosition}}
-      @aspectRatio={{this.aspectRatio}}
     />
     <EmberThree::Core::Object3d
       @parent={{s.scene}}
       @rotation={{this.containerRotation}}
       as |meshContainer|
     >
-      {{#each this.appState.objectProperties as |properties|}}
+      {{#each this.cubesAppState.objectProperties as |properties|}}
         <EmberThree::Objects::Mesh
           @rotation={{properties.r}}
           @position={{properties.p}}

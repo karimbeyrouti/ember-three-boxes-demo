@@ -23,6 +23,7 @@ export default class DemoComponent extends Component {
     super(...arguments);
     this.stats = new Stats();
     document.body.appendChild(this.stats.dom);
+
     let scene = this.sceneManager.get(this.sceneId);
     scene.addRafCallback(this.render, this);
     scene.setStats(this.stats);

@@ -6,7 +6,7 @@ import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 
 export default class DemoComponent extends Component {
-  @service appState;
+  @service cubesAppState;
   @service('ember-three/scene-manager') sceneManager;
 
   @tracked containerRotation = new THREE.Euler();
@@ -28,14 +28,13 @@ export default class DemoComponent extends Component {
     this.stats = new Stats();
     document.body.appendChild(this.stats.dom);
 
-    // TODO: fix this is not ideal, but for now it gets us a single RAF loop
     let scene = this.sceneManager.get(this.sceneId);
     scene.addRafCallback(this.render, this);
     scene.setStats(this.stats);
   }
 
   render() {
-    let { objectProperties } = this.appState;
+    let { objectProperties } = this.cubesAppState;
 
     this.containerRotation.y += 0.045;
     this.containerRotation = this.containerRotation;

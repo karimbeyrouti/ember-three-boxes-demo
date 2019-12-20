@@ -8,6 +8,7 @@ const DEFAULT_RENDERER_PARAMS = {
 };
 
 export default class EmberThreeScene {
+  camera = undefined;
   frameAcc = 0;
   frameTime = 16;
   raf = undefined;
