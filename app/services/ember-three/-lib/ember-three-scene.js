@@ -80,6 +80,7 @@ export default class EmberThreeScene {
     this.parentElement.removeEventListener('mousemove', this.mouseMoveDelegate, false);
     this.parentElement.removeChild(this.domElement);
     this.stop();
+    this.raf.dispose();
     this.scene.dispose();
     this.renderer.dispose();
     this.preRenderCallback = undefined;
