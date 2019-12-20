@@ -23,4 +23,12 @@ export default class ScenePerspectiveCameraComponent extends ObjectProxy {
     scene.setCamera(this.object3D);
     this.init();
   }
+
+  didReceiveArgs() {
+    super.didReceiveArgs();
+    let { target } = this.args;
+    if (this._object3D && target) {
+      this._object3D.lookAt(target);
+    }
+  }
 }
