@@ -58,4 +58,21 @@ export default class EmberObject3DComponent extends LifeCycleComponent {
       this.remove(this._parent, this.object3D);
     }
   }
+
+  applySettingsToObject(object, settings) {
+    if (!settings) {
+      return;
+    }
+
+    let keys = Object.keys(settings);
+    let { length } = keys;
+    for (let c = 0;c < length; c++) {
+      let key = keys[c];
+      let value = settings[key];
+      let type = typeof value;
+      if (type !== 'object') {
+        object[key] = value;
+      }
+    }
+  }
 }
