@@ -23,7 +23,6 @@ export default class SceneDirectionalLightComponent extends ObjectProxy {
       this._object3D.intensity = intensity;
     }
 
-
     if (parent !== this._parent) {
       this.remove(this._parent, this._object3D);
       this.add(parent, this._object3D);
