@@ -5,7 +5,7 @@
       <select {{on 'change' this.updateCount}}>
         {{#each counts as |count|}}
           <option
-            selected={{eq this.appState.count count}}
+            selected={{eq this.cubesAppState.count count}}
             value={{count}}
           >
             {{count}}
