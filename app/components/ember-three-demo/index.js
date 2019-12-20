@@ -3,7 +3,7 @@ import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { isPresent } from '@ember/utils';
 
-export const DEFAULT_DEMO = 'lines';
+export const DEFAULT_DEMO = 'shadow-cubes';
 
 export default class DemoComponent extends Component {
   @tracked selectedDemo = DEFAULT_DEMO;

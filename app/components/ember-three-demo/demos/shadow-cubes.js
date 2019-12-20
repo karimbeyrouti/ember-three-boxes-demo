@@ -14,8 +14,8 @@ export default class InteractiveCubeDemoComponent extends Component {
   emberScene = undefined;
   boxBufferGeometry = new THREE.BoxBufferGeometry(1, 1, 1);
   spotLightPosition = new THREE.Vector3(
-    getRandomInt(20, 60),
-    getRandomInt(20, 80),
+    getRandomInt(20, 40),
+    getRandomInt(10, 30),
     getRandomInt(10, 30)
   );
   spotLightTarget = new THREE.Object3D(0, 0, 0);
