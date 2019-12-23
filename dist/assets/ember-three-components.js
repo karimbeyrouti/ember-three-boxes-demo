@@ -656,6 +656,116 @@
 
   Ember._setComponentTemplate(__COLOCATED_TEMPLATE__, DemoComponent);
 });
+;define("ember-three-components/components/ember-three-demo/demos/objects/snow", ["exports", "@babel/runtime/helpers/esm/initializerDefineProperty", "@babel/runtime/helpers/esm/defineProperty", "@babel/runtime/helpers/esm/applyDecoratedDescriptor", "@babel/runtime/helpers/esm/initializerWarningHelper", "three", "@glimmer/component"], function (_exports, _initializerDefineProperty2, _defineProperty2, _applyDecoratedDescriptor2, _initializerWarningHelper2, _three, _component) {
+  "use strict";
+
+  Object.defineProperty(_exports, "__esModule", {
+    value: true
+  });
+  _exports.default = void 0;
+
+  var _dec, _class, _descriptor, _descriptor2, _temp;
+
+  const __COLOCATED_TEMPLATE__ = Ember.HTMLBars.template(
+  /*
+    
+  {{#each this.particles as |particlesData|}}
+    <EmberThree::Objects::Points
+      @scale={{particlesData.scale}}
+      @rotation={{particlesData.rotation}}
+      @parent={{@parent}}
+      @material={{particlesData.material}}
+      @geometry={{particlesData.geometry}}
+    />
+  {{/each}}
+  
+  */
+  {
+    id: "ew2Munxo",
+    block: "{\"symbols\":[\"particlesData\",\"@parent\"],\"statements\":[[0,\"\\n\"],[4,\"each\",[[23,0,[\"particles\"]]],null,{\"statements\":[[0,\"  \"],[5,\"ember-three/objects/points\",[],[[\"@scale\",\"@rotation\",\"@parent\",\"@material\",\"@geometry\"],[[23,1,[\"scale\"]],[23,1,[\"rotation\"]],[23,2,[]],[23,1,[\"material\"]],[23,1,[\"geometry\"]]]]],[0,\"\\n\"]],\"parameters\":[1]},null]],\"hasEval\":false}",
+    meta: {
+      moduleName: "ember-three-components/components/ember-three-demo/demos/objects/snow.hbs"
+    }
+  });
+
+  let DemoComponent = (_dec = Ember.inject.service('ember-three/scene-manager'), (_class = (_temp = class DemoComponent extends _component.default {
+    constructor() {
+      super(...arguments);
+      (0, _initializerDefineProperty2.default)(this, "sceneManager", _descriptor, this);
+      (0, _defineProperty2.default)(this, "emberScene", undefined);
+      (0, _initializerDefineProperty2.default)(this, "rotations", _descriptor2, this);
+      this.emberScene = this.sceneManager.get(this.args.sceneId);
+      this.emberScene.addRafCallback(this.render, this);
+      this.vertices = [];
+      this.materials = [];
+      this.textureLoader = new _three.default.TextureLoader();
+      this.sprite1 = this.textureLoader.load('images/sprites/snowflake1.png');
+      this.sprite2 = this.textureLoader.load('images/sprites/snowflake2.png');
+      this.sprite3 = this.textureLoader.load('images/sprites/snowflake3.png');
+      this.sprite4 = this.textureLoader.load('images/sprites/snowflake4.png');
+      this.sprite5 = this.textureLoader.load('images/sprites/snowflake5.png');
+      this.geometry = new _three.default.BufferGeometry();
+
+      for (let i = 0; i < 12000; i++) {
+        let max = 60;
+        let min = 30;
+        let x = Math.random() * max - min;
+        let y = Math.random() * max - min;
+        let z = Math.random() * max - min;
+        this.vertices.push(x, y, z);
+      }
+
+      this.geometry.setAttribute('position', new _three.default.Float32BufferAttribute(this.vertices, 3));
+    }
+
+    get particles() {
+      let particlesData = [];
+      let sizeScalar = 100;
+      let parameters = [[[0.2, 0.2, 0.5], this.sprite2, 20 / sizeScalar], [[0.3, 0.1, 0.5], this.sprite3, 15 / sizeScalar], [[0.1, 0.05, 0.5], this.sprite1, 10 / sizeScalar], [[0.2, 0, 0.5], this.sprite5, 8 / sizeScalar], [[0.28, 0, 0.5], this.sprite4, 5 / sizeScalar]];
+
+      for (let i = 0; i < parameters.length; i++) {
+        let color = parameters[i][0];
+        let sprite = parameters[i][1];
+        let size = parameters[i][2];
+        this.materials[i] = new _three.default.PointsMaterial({
+          size: size,
+          map: sprite,
+          blending: _three.default.AdditiveBlending,
+          depthTest: true,
+          transparent: true
+        });
+        this.materials[i].color.setHSL(color[0], color[1], color[2]);
+        this.rotations[i] = new _three.default.Vector3(Math.random() * 6, Math.random() * 6, Math.random() * 6);
+        particlesData.push({
+          geometry: this.geometry,
+          material: this.materials[i],
+          rotation: this.rotations[i],
+          scale: new _three.default.Vector3(1, 1, 1)
+        });
+      }
+
+      return particlesData;
+    }
+
+    render() {}
+
+  }, _temp), (_descriptor = (0, _applyDecoratedDescriptor2.default)(_class.prototype, "sceneManager", [_dec], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
+  }), _descriptor2 = (0, _applyDecoratedDescriptor2.default)(_class.prototype, "rotations", [Ember._tracked], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: function () {
+      return [];
+    }
+  })), _class));
+  _exports.default = DemoComponent;
+
+  Ember._setComponentTemplate(__COLOCATED_TEMPLATE__, DemoComponent);
+});
 ;define("ember-three-components/components/ember-three-demo/demos/shadow-cubes", ["exports", "@babel/runtime/helpers/esm/initializerDefineProperty", "@babel/runtime/helpers/esm/defineProperty", "@babel/runtime/helpers/esm/applyDecoratedDescriptor", "@babel/runtime/helpers/esm/initializerWarningHelper", "three", "@glimmer/component", "stats.js"], function (_exports, _initializerDefineProperty2, _defineProperty2, _applyDecoratedDescriptor2, _initializerWarningHelper2, _three, _component, _stats) {
   "use strict";
 
@@ -705,6 +815,12 @@
         @rotation={{this.containerRotation}}
         as |meshContainer|
       >
+  
+        <EmberThreeDemo::Demos::Objects::Snow
+          @parent={{meshContainer}}
+          @sceneId={{this.sceneId}}
+        />
+  
         {{#each this.cubes as |cubeProperties|}}
           <EmberThree::Objects::Mesh
             @rotation={{cubeProperties.rotation}}
@@ -732,8 +848,8 @@
   
   */
   {
-    id: "f8bCw7cf",
-    block: "{\"symbols\":[\"emberThree\",\"meshContainer\",\"cubeProperties\",\"spotLight\"],\"statements\":[[0,\"\\n\"],[7,\"main\",false],[3,\"will-destroy\",[[23,0,[\"destroyElement\"]]]],[8],[0,\"\\n  \"],[5,\"ember-three\",[],[[\"@id\",\"@rendererParams\"],[[23,0,[\"sceneId\"]],[23,0,[\"rendererParams\"]]]],{\"statements\":[[0,\"\\n    \"],[5,\"ember-three/lights/spot-light\",[],[[\"@shadow\",\"@parent\",\"@position\",\"@target\",\"@distance\",\"@intensity\",\"@angle\",\"@penumbra\",\"@castShadow\"],[[22,\"spotLightShadow\"],[23,1,[\"scene\"]],[23,0,[\"spotLightPosition\"]],[23,0,[\"spotLightTarget\"]],[23,0,[\"spotLightDistance\"]],1.25,0.7853,0.4,true]],{\"statements\":[[0,\"\\n\"],[0,\"    \"]],\"parameters\":[4]}],[0,\"\\n\\n    \"],[5,\"ember-three/cameras/perspective-camera\",[],[[\"@position\",\"@target\"],[[23,0,[\"cameraPosition\"]],[23,0,[\"cameraTarget\"]]]]],[0,\"\\n\\n    \"],[5,\"ember-three/core/object3d\",[],[[\"@parent\",\"@rotation\"],[[23,1,[\"scene\"]],[23,0,[\"containerRotation\"]]]],{\"statements\":[[0,\"\\n\"],[4,\"each\",[[23,0,[\"cubes\"]]],null,{\"statements\":[[0,\"        \"],[5,\"ember-three/objects/mesh\",[],[[\"@rotation\",\"@position\",\"@scale\",\"@parent\",\"@material\",\"@geometry\",\"@castShadow\",\"@receiveShadow\"],[[23,3,[\"rotation\"]],[23,3,[\"position\"]],[23,3,[\"scale\"]],[23,2,[]],[23,3,[\"material\"]],[23,0,[\"boxBufferGeometry\"]],true,true]]],[0,\"\\n\"]],\"parameters\":[3]},null],[0,\"\\n      \"],[5,\"ember-three/objects/mesh\",[],[[\"@parent\",\"@material\",\"@geometry\",\"@rotation\",\"@receiveShadow\"],[[23,2,[]],[23,0,[\"planeMaterial\"]],[23,0,[\"planeGeometry\"]],[23,0,[\"planeRotation\"]],true]]],[0,\"\\n    \"]],\"parameters\":[2]}],[0,\"\\n  \"]],\"parameters\":[1]}],[0,\"\\n\"],[9],[0,\"\\n\\n\"]],\"hasEval\":false}",
+    id: "nfybdJly",
+    block: "{\"symbols\":[\"emberThree\",\"meshContainer\",\"cubeProperties\",\"spotLight\"],\"statements\":[[0,\"\\n\"],[7,\"main\",false],[3,\"will-destroy\",[[23,0,[\"destroyElement\"]]]],[8],[0,\"\\n  \"],[5,\"ember-three\",[],[[\"@id\",\"@rendererParams\"],[[23,0,[\"sceneId\"]],[23,0,[\"rendererParams\"]]]],{\"statements\":[[0,\"\\n    \"],[5,\"ember-three/lights/spot-light\",[],[[\"@shadow\",\"@parent\",\"@position\",\"@target\",\"@distance\",\"@intensity\",\"@angle\",\"@penumbra\",\"@castShadow\"],[[22,\"spotLightShadow\"],[23,1,[\"scene\"]],[23,0,[\"spotLightPosition\"]],[23,0,[\"spotLightTarget\"]],[23,0,[\"spotLightDistance\"]],1.25,0.7853,0.4,true]],{\"statements\":[[0,\"\\n\"],[0,\"    \"]],\"parameters\":[4]}],[0,\"\\n\\n    \"],[5,\"ember-three/cameras/perspective-camera\",[],[[\"@position\",\"@target\"],[[23,0,[\"cameraPosition\"]],[23,0,[\"cameraTarget\"]]]]],[0,\"\\n\\n    \"],[5,\"ember-three/core/object3d\",[],[[\"@parent\",\"@rotation\"],[[23,1,[\"scene\"]],[23,0,[\"containerRotation\"]]]],{\"statements\":[[0,\"\\n\\n      \"],[5,\"ember-three-demo/demos/objects/snow\",[],[[\"@parent\",\"@sceneId\"],[[23,2,[]],[23,0,[\"sceneId\"]]]]],[0,\"\\n\\n\"],[4,\"each\",[[23,0,[\"cubes\"]]],null,{\"statements\":[[0,\"        \"],[5,\"ember-three/objects/mesh\",[],[[\"@rotation\",\"@position\",\"@scale\",\"@parent\",\"@material\",\"@geometry\",\"@castShadow\",\"@receiveShadow\"],[[23,3,[\"rotation\"]],[23,3,[\"position\"]],[23,3,[\"scale\"]],[23,2,[]],[23,3,[\"material\"]],[23,0,[\"boxBufferGeometry\"]],true,true]]],[0,\"\\n\"]],\"parameters\":[3]},null],[0,\"\\n      \"],[5,\"ember-three/objects/mesh\",[],[[\"@parent\",\"@material\",\"@geometry\",\"@rotation\",\"@receiveShadow\"],[[23,2,[]],[23,0,[\"planeMaterial\"]],[23,0,[\"planeGeometry\"]],[23,0,[\"planeRotation\"]],true]]],[0,\"\\n    \"]],\"parameters\":[2]}],[0,\"\\n  \"]],\"parameters\":[1]}],[0,\"\\n\"],[9],[0,\"\\n\\n\"]],\"hasEval\":false}",
     meta: {
       moduleName: "ember-three-components/components/ember-three-demo/demos/shadow-cubes.hbs"
     }
@@ -2561,7 +2677,7 @@ catch(err) {
 
 ;
           if (!runningTests) {
-            require("ember-three-components/app")["default"].create({"name":"ember-three-components","version":"0.0.0+4f950f21"});
+            require("ember-three-components/app")["default"].create({"name":"ember-three-components","version":"0.0.0+97a504d9"});
           }
         
 //# sourceMappingURL=ember-three-components.map
