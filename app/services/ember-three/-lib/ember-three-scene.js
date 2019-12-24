@@ -70,7 +70,7 @@ export default class EmberThreeScene {
 
     this.frameAcc += dt;
 
-    if (this.frameAcc > this.frameTime) {
+    if (this.frameAcc > this.frameTime && this.camera) {
       this.frameAcc = 0;
       this.renderer.render(this.scene, this.camera);
     }

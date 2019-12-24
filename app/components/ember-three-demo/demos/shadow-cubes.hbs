@@ -35,6 +35,12 @@
       @rotation={{this.containerRotation}}
       as |meshContainer|
     >
+
+      <EmberThreeDemo::Demos::Objects::Snow
+        @parent={{meshContainer}}
+        @sceneId={{this.sceneId}}
+      />
+
       {{#each this.cubes as |cubeProperties|}}
         <EmberThree::Objects::Mesh
           @rotation={{cubeProperties.rotation}}
