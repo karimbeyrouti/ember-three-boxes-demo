@@ -84,8 +84,11 @@ export default class InteractiveCubeDemoComponent extends Component {
   }
   render() {
     this.theta += 0.05;
-    this.cameraPosition.x = this.radius * Math.sin(THREE.Math.degToRad(this.theta));
-    this.cameraPosition.y = 30;
+    let xMousePosition = this.emberScene.mouse.x * 30;
+    let yMousePosition = this.emberScene.mouse.y * 30 + 40;
+    let xMouseIncrement = this.radius * Math.sin(THREE.Math.degToRad(this.theta));
+    this.cameraPosition.x = xMousePosition + xMouseIncrement;
+    this.cameraPosition.y = yMousePosition;
     this.cameraPosition.z = this.radius * Math.cos(THREE.Math.degToRad(this.theta));
     this.cameraPosition = this.cameraPosition; // flag as dirty so glimmer can update args
   }

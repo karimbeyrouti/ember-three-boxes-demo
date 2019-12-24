@@ -664,7 +664,7 @@
   });
   _exports.default = void 0;
 
-  var _dec, _class, _descriptor, _descriptor2, _temp;
+  var _class, _descriptor, _descriptor2, _descriptor3, _descriptor4, _temp, _dec, _class3, _descriptor5, _descriptor6, _descriptor7, _temp2;
 
   const __COLOCATED_TEMPLATE__ = Ember.HTMLBars.template(
   /*
@@ -688,16 +688,62 @@
     }
   });
 
-  let DemoComponent = (_dec = Ember.inject.service('ember-three/scene-manager'), (_class = (_temp = class DemoComponent extends _component.default {
+  let ParticleData = (_class = (_temp = class ParticleData {
+    constructor({
+      geometry,
+      material,
+      rotation,
+      scale
+    }) {
+      (0, _initializerDefineProperty2.default)(this, "geometry", _descriptor, this);
+      (0, _initializerDefineProperty2.default)(this, "material", _descriptor2, this);
+      (0, _initializerDefineProperty2.default)(this, "rotation", _descriptor3, this);
+      (0, _initializerDefineProperty2.default)(this, "scale", _descriptor4, this);
+      this.geometry = geometry;
+      this.material = material;
+      this.rotation = rotation;
+      this.scale = scale;
+    }
+
+  }, _temp), (_descriptor = (0, _applyDecoratedDescriptor2.default)(_class.prototype, "geometry", [Ember._tracked], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
+  }), _descriptor2 = (0, _applyDecoratedDescriptor2.default)(_class.prototype, "material", [Ember._tracked], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
+  }), _descriptor3 = (0, _applyDecoratedDescriptor2.default)(_class.prototype, "rotation", [Ember._tracked], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
+  }), _descriptor4 = (0, _applyDecoratedDescriptor2.default)(_class.prototype, "scale", [Ember._tracked], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: null
+  })), _class);
+  let DemoComponent = (_dec = Ember.inject.service('ember-three/scene-manager'), (_class3 = (_temp2 = class DemoComponent extends _component.default {
     constructor() {
       super(...arguments);
-      (0, _initializerDefineProperty2.default)(this, "sceneManager", _descriptor, this);
+      (0, _initializerDefineProperty2.default)(this, "sceneManager", _descriptor5, this);
       (0, _defineProperty2.default)(this, "emberScene", undefined);
-      (0, _initializerDefineProperty2.default)(this, "rotations", _descriptor2, this);
+      (0, _initializerDefineProperty2.default)(this, "rotations", _descriptor6, this);
+      (0, _initializerDefineProperty2.default)(this, "_particlesData", _descriptor7, this);
+      (0, _defineProperty2.default)(this, "vertices", []);
+      (0, _defineProperty2.default)(this, "materials", []);
+      (0, _defineProperty2.default)(this, "textureLoader", void 0);
+      (0, _defineProperty2.default)(this, "sprite1", void 0);
+      (0, _defineProperty2.default)(this, "sprite2", void 0);
+      (0, _defineProperty2.default)(this, "sprite3", void 0);
+      (0, _defineProperty2.default)(this, "sprite4", void 0);
+      (0, _defineProperty2.default)(this, "sprite5", void 0);
+      (0, _defineProperty2.default)(this, "geometry", void 0);
       this.emberScene = this.sceneManager.get(this.args.sceneId);
       this.emberScene.addRafCallback(this.render, this);
-      this.vertices = [];
-      this.materials = [];
       this.textureLoader = new _three.default.TextureLoader();
       this.sprite1 = this.textureLoader.load('images/sprites/snowflake1.png');
       this.sprite2 = this.textureLoader.load('images/sprites/snowflake2.png');
@@ -707,8 +753,8 @@
       this.geometry = new _three.default.BufferGeometry();
 
       for (let i = 0; i < 12000; i++) {
-        let max = 60;
-        let min = 30;
+        let max = 70;
+        let min = 35;
         let x = Math.random() * max - min;
         let y = Math.random() * max - min;
         let z = Math.random() * max - min;
@@ -716,11 +762,12 @@
       }
 
       this.geometry.setAttribute('position', new _three.default.Float32BufferAttribute(this.vertices, 3));
+      this._particlesData = this.initParticles();
     }
 
-    get particles() {
+    initParticles() {
       let particlesData = [];
-      let sizeScalar = 100;
+      let sizeScalar = 110;
       let parameters = [[[0.2, 0.2, 0.5], this.sprite2, 20 / sizeScalar], [[0.3, 0.1, 0.5], this.sprite3, 15 / sizeScalar], [[0.1, 0.05, 0.5], this.sprite1, 10 / sizeScalar], [[0.2, 0, 0.5], this.sprite5, 8 / sizeScalar], [[0.28, 0, 0.5], this.sprite4, 5 / sizeScalar]];
 
       for (let i = 0; i < parameters.length; i++) {
@@ -735,33 +782,57 @@
           transparent: true
         });
         this.materials[i].color.setHSL(color[0], color[1], color[2]);
-        this.rotations[i] = new _three.default.Vector3(Math.random() * 6, Math.random() * 6, Math.random() * 6);
-        particlesData.push({
+        this.rotations[i] = new _three.default.Vector3(0, Math.random() * 6, 0);
+        particlesData.push(new ParticleData({
           geometry: this.geometry,
           material: this.materials[i],
           rotation: this.rotations[i],
           scale: new _three.default.Vector3(1, 1, 1)
-        });
+        }));
       }
 
       return particlesData;
     }
 
-    render() {}
+    get particles() {
+      this._particlesData.forEach((particleData, counter) => {
+        particleData.rotation = this.rotations[counter];
+      });
 
-  }, _temp), (_descriptor = (0, _applyDecoratedDescriptor2.default)(_class.prototype, "sceneManager", [_dec], {
+      return this._particlesData;
+    }
+
+    render(dt) {
+      let time = dt / 10000; // / 10;
+
+      for (let i = 0; i < this.rotations.length; i++) {
+        let rotation = this.rotations[i];
+        rotation.y -= time * (i + 1);
+      }
+
+      this.rotations = this.rotations;
+    }
+
+  }, _temp2), (_descriptor5 = (0, _applyDecoratedDescriptor2.default)(_class3.prototype, "sceneManager", [_dec], {
     configurable: true,
     enumerable: true,
     writable: true,
     initializer: null
-  }), _descriptor2 = (0, _applyDecoratedDescriptor2.default)(_class.prototype, "rotations", [Ember._tracked], {
+  }), _descriptor6 = (0, _applyDecoratedDescriptor2.default)(_class3.prototype, "rotations", [Ember._tracked], {
     configurable: true,
     enumerable: true,
     writable: true,
     initializer: function () {
       return [];
     }
-  })), _class));
+  }), _descriptor7 = (0, _applyDecoratedDescriptor2.default)(_class3.prototype, "_particlesData", [Ember._tracked], {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    initializer: function () {
+      return [];
+    }
+  })), _class3));
   _exports.default = DemoComponent;
 
   Ember._setComponentTemplate(__COLOCATED_TEMPLATE__, DemoComponent);
@@ -930,8 +1001,11 @@
 
     render() {
       this.theta += 0.05;
-      this.cameraPosition.x = this.radius * Math.sin(_three.default.Math.degToRad(this.theta));
-      this.cameraPosition.y = 30;
+      let xMousePosition = this.emberScene.mouse.x * 30;
+      let yMousePosition = this.emberScene.mouse.y * 30 + 40;
+      let xMouseIncrement = this.radius * Math.sin(_three.default.Math.degToRad(this.theta));
+      this.cameraPosition.x = xMousePosition + xMouseIncrement;
+      this.cameraPosition.y = yMousePosition;
       this.cameraPosition.z = this.radius * Math.cos(_three.default.Math.degToRad(this.theta));
       this.cameraPosition = this.cameraPosition; // flag as dirty so glimmer can update args
     }
@@ -2677,7 +2751,7 @@ catch(err) {
 
 ;
           if (!runningTests) {
-            require("ember-three-components/app")["default"].create({"name":"ember-three-components","version":"0.0.0+97a504d9"});
+            require("ember-three-components/app")["default"].create({"name":"ember-three-components","version":"0.0.0+7250e679"});
           }
         
 //# sourceMappingURL=ember-three-components.map
