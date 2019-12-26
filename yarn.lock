@@ -3923,7 +3923,7 @@ ember-cli-babel@^7.1.2, ember-cli-babel@^7.10.0, ember-cli-babel@^7.11.0, ember-
     ensure-posix-path "^1.0.2"
     semver "^5.5.0"
 
-ember-cli-babel@^7.13.2:
+ember-cli-babel@^7.11.1, ember-cli-babel@^7.13.2:
   version "7.13.2"
   resolved "https://registry.npmjs.org/ember-cli-babel/-/ember-cli-babel-7.13.2.tgz#6b6f4d508cc3bb300c5711d3d02c59ba80f0f686"
   integrity sha512-VH2tMXaRFkbQEyVJnxUtAyta5bAKjtcLwJ4lStW/iRk/NIlNFNJh1uOd7uL9H9Vm0f4/xR7Mc0Q7ND9ezKOo+A==
@@ -3977,7 +3977,7 @@ ember-cli-htmlbars-inline-precompile@^2.1.0:
     heimdalljs-logger "^0.1.9"
     silent-error "^1.1.0"
 
-ember-cli-htmlbars@^4.0.5, ember-cli-htmlbars@^4.2.0:
+ember-cli-htmlbars@^4.0.0, ember-cli-htmlbars@^4.0.5, ember-cli-htmlbars@^4.2.0:
   version "4.2.0"
   resolved "https://registry.npmjs.org/ember-cli-htmlbars/-/ember-cli-htmlbars-4.2.0.tgz#a3694ab31f6d571c45786a3041b9c76e4eb30989"
   integrity sha512-YymJLg/rRiclK5jxbTFpaRNlbS+f3SY6SplnMExjcrcbSjMRsBuams50+mppENEu7iKfd6PBqH3FHVbYsukHSQ==
@@ -4401,6 +4401,15 @@ ember-test-waiters@^1.1.1:
   integrity sha512-ra71ZWTGBGLeDPa308aeAg9+/nYxv2fk4OEzmXdhvbSa5Dtbei94sr5pbLXx2IiK3Re2gDAvDzxg9PVhLy9fig==
   dependencies:
     ember-cli-babel "^7.1.2"
+
+ember-three-ui@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/ember-three-ui/-/ember-three-ui-0.0.2.tgz#50eea6c017a5fee8d3d18e5b2e653c3798030bd8"
+  integrity sha512-kwe2CfIUIJFen+6/X0nYK20uC/nsZAE+I15YkUas0aACMrNHYKnAUhe1odbeL31hahK5oAFSg9hlnf+VBrfcYg==
+  dependencies:
+    ember-cli-babel "^7.11.1"
+    ember-cli-htmlbars "^4.0.0"
+    ember-lifecycle-component "^0.7.0"
 
 emoji-regex@^7.0.1:
   version "7.0.3"
